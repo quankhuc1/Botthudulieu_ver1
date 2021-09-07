@@ -1,6 +1,6 @@
 import pandas as pd
 from datetime import datetime
-from csv import writer
+from csv import writer, QUOTE_ALL
 from pytz import timezone
 
 
@@ -23,6 +23,6 @@ while True:
 
         string_file_name = 'Giahomnay_' + str(datetime.today()) + '.csv'
         with open(string_file_name, 'w', encoding='utf-8', newline='') as myfile:
-            wr = writer(myfile, quoting=csv.QUOTE_ALL)
+            wr = writer(myfile, quoting=QUOTE_ALL)
             wr.writerow(last_price)
         print('---> Thoat chuong trinh thanh cong va luu vao file csv')
