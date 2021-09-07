@@ -23,15 +23,16 @@ while True:
                 data = requests.get('https://bgapidatafeed.vps.com.vn/getpsalldatalsnapshot/VN30F2109,'
                                     'VN30F2110,VN30F2112,VN30F2203', timeout=10).json()
                 last_price.append(data[3]['lastPrice'])
-            except ConnectionError:
-                print('Mat ket noi voi server')
-                break
-            except TimeoutError:
-                print('Chuong trinh doi may chu tra ve trong 10 giay nhung may chu ko tra thong tin ve')
-                break
             except requests.exceptions.RequestException as exception:
-                print('request.get() bi loi va se phai xem them thong tin cua exception')
-                print('---> Ten cua exception: ', str(type(exception).__name__))
+                if str(type(exception).__name__) == 'TimeoutError':
+                    print('Chuong trinh doi may chu tra ve trong 10 giay nhung may chu ko tra thong tin ve')
+                elif str(type(exception).__name__) == 'ConnectionError':
+                    print('Mat ket noi voi server')
+                else:
+                    print('request.get() bi loi va se phai xem them thong tin cua exception')
+                    print('---> Ten cua exception: ', str(type(exception).__name__))
+                print('---> Chuong trinh se bi thoat do co exception va du lieu se duoc luu')
+                break
         # neu day last_price co it hon 2 gia, chuong trinh se ko in ra file csv de tranh in ra file csv co moi 1 gia
         if len(last_price) >= 2:
             string_file_name = 'Giahomnay_' + str(datetime.today()) + '.csv'
