@@ -1,7 +1,7 @@
-import pandas as pd
 from datetime import datetime
 from csv import writer, QUOTE_ALL
 from pytz import timezone
+import requests
 
 
 # Bot don gian thu ve gia last price cua ma VN30F2203 theo tung giay
@@ -18,14 +18,27 @@ while True:
             if closing_time < 9 or closing_time >= 15:
                 print('---> Thi truong da dong cua')
                 break
-            df = pd.read_json(url)
-            last_price.append(df.to_numpy()[3, 6])
-
-        string_file_name = 'Giahomnay_' + str(datetime.today()) + '.csv'
-        with open(string_file_name, 'w', encoding='utf-8', newline='') as myfile:
-            wr = writer(myfile, quoting=QUOTE_ALL)
-            wr.writerow(last_price)
-        print('---> Thoat chuong trinh thanh cong va luu vao file csv')
+            try:
+                # timeout cua request nay la 10s. Neu connection mat hon 10 giay, no se raise exception phia duoi
+                data = requests.get('https://bgapidatafeed.vps.com.vn/getpsalldatalsnapshot/VN30F2109,'
+                                    'VN30F2110,VN30F2112,VN30F2203', timeout=10).json()
+                last_price.append(data[3]['lastPrice'])
+            except ConnectionError:
+                print('Mat ket noi voi server')
+                break
+            except TimeoutError:
+                print('Chuong trinh doi may chu tra ve trong 10 giay nhung may chu ko tra thong tin ve')
+                break
+            except requests.exceptions.RequestException as exception:
+                print('request.get() bi loi va se phai xem them thong tin cua exception')
+                print('---> Ten cua exception: ', str(type(exception).__name__))
+        # neu day last_price co it hon 2 gia, chuong trinh se ko in ra file csv de tranh in ra file csv co moi 1 gia
+        if len(last_price) >= 2:
+            string_file_name = 'Giahomnay_' + str(datetime.today()) + '.csv'
+            with open(string_file_name, 'w', encoding='utf-8', newline='') as myfile:
+                wr = writer(myfile, quoting=QUOTE_ALL)
+                wr.writerow(last_price)
+            print('---> Thoat chuong trinh thanh cong va luu vao file csv')
     else:
         print('Thi truong dang dong cua, hay mo chuong trinh vao thoi gian luc thi truong mo cua')
         break
