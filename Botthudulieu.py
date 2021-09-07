@@ -26,3 +26,6 @@ while True:
             wr = writer(myfile, quoting=QUOTE_ALL)
             wr.writerow(last_price)
         print('---> Thoat chuong trinh thanh cong va luu vao file csv')
+    else:
+        print('Thi truong dang dong cua, hay mo chuong trinh vao thoi gian luc thi truong mo cua')
+        break
