@@ -9,13 +9,13 @@ from pytz import timezone
 # neu no ko thoat thi a huy cai chuong trinh nay de no dung lai
 while True:
     trading_time = int(datetime.now(timezone('Asia/Ho_Chi_Minh')).time().hour)
-    if trading_time >= 9 or trading_time < 3:
+    if 9 <= trading_time < 15:
         print('---> Thi truong vua mo cua va bat dau thu thap du lieu')
         last_price = []
         url = 'https://bgapidatafeed.vps.com.vn/getpsalldatalsnapshot/VN30F2109,VN30F2110,VN30F2112,VN30F2203'
         while True:
-            closing_time = datetime.now(timezone('Asia/Ho_Chi_Minh')).time()
-            if 3 <= int(closing_time.hour) <= 8:
+            closing_time = int(datetime.now(timezone('Asia/Ho_Chi_Minh')).time().hour)
+            if closing_time < 9 or closing_time >= 15:
                 print('---> Thi truong da dong cua')
                 break
             df = pd.read_json(url)
