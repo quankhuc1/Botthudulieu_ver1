@@ -30,9 +30,9 @@ while True:
                     print('Mat ket noi voi server')
                 else:
                     print('request.get() bi loi va se phai xem them thong tin cua exception')
-                    print('---> Ten cua exception: ', str(type(exception).__name__))
-                print('---> Chuong trinh se bi thoat do co exception va du lieu se duoc luu')
-                break
+                    print('---> Ten cua exception:', str(type(exception).__name__))
+                    print('---> Chuong trinh se bi thoat do co exception va du lieu se duoc luu')
+                    break
         # neu day last_price co it hon 2 gia, chuong trinh se ko in ra file csv de tranh in ra file csv co moi 1 gia
         if len(last_price) >= 2:
             date_time = str(datetime.today()).replace('-', '_')[:10]
