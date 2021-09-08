@@ -26,8 +26,10 @@ while True:
             except requests.exceptions.RequestException as exception:
                 if str(type(exception).__name__) == 'TimeoutError':
                     print('Chuong trinh doi may chu tra ve trong 10 giay nhung may chu ko tra thong tin ve')
+                    continue
                 elif str(type(exception).__name__) == 'ConnectionError':
                     print('Mat ket noi voi server')
+                    continue
                 else:
                     print('request.get() bi loi va se phai xem them thong tin cua exception')
                     print('---> Ten cua exception:', str(type(exception).__name__))
