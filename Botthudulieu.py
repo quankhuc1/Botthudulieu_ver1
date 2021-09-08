@@ -35,7 +35,8 @@ while True:
                 break
         # neu day last_price co it hon 2 gia, chuong trinh se ko in ra file csv de tranh in ra file csv co moi 1 gia
         if len(last_price) >= 2:
-            string_file_name = 'Giahomnay_' + str(datetime.today()) + '.csv'
+            date_time = str(datetime.today()).replace('-', '_')[:10]
+            string_file_name = 'Giahomnay_' + date_time + '.csv'
             with open(string_file_name, 'w', encoding='utf-8', newline='') as myfile:
                 wr = writer(myfile, quoting=QUOTE_ALL)
                 wr.writerow(last_price)
